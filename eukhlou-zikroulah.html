@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eukhlou Zikroulah — Archive du Saam Fall</title>
+<meta name="description" content="Eukhlou Zikroulah : Archive numérique des bandes audio du Saam Fall. Streaming et téléchargement libre des enregistrements historiques de Baye Djiby Diouf.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #404040;
+    --primary-light: #5A5A5A;
+    --primary-dark: #2A2A2A;
+    --accent: #757575;
+    --bg-light: #F5F5F5;
+    --bg-white: #FFFFFF;
+    --text-dark: #1A1A1A;
+    --text-muted: #666666;
+    --border-light: rgba(0, 0, 0, 0.1);
+    --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.08);
+    --shadow-hover: 0 12px 48px rgba(0, 0, 0, 0.12);
+    --radius: 20px;
+    --blur: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, var(--bg-light) 0%, #F0FFFE 100%);
+    color: var(--text-dark);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* ──────────────────────────────────────────────────── NAVBAR */
+  .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    backdrop-filter: blur(var(--blur));
+    -webkit-backdrop-filter: blur(var(--blur));
+    background: rgba(248, 249, 250, 0.7);
+    border-bottom: 1px solid var(--border-light);
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .navbar-brand {
+    font-family: 'Poppins', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-decoration: none;
+    letter-spacing: -0.5px;
+  }
+
+  .navbar-links {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+  }
+
+  .navbar-links a {
+    font-size: 13px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+  }
+
+  .navbar-links a:hover {
+    background: rgba(78, 205, 196, 0.1);
+    color: var(--primary-dark);
+  }
+
+  /* ──────────────────────────────────────────────────── HERO */
+  .hero {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 4rem 2rem 3rem;
+    text-align: center;
+    animation: fadeInUp 0.8s ease;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: rgba(78, 205, 196, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-light);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--primary-dark);
+    letter-spacing: 0.05em;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+  }
+
+  .hero-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(36px, 8vw, 56px);
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 0.75rem;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .hero-subtitle {
+    font-size: 16px;
+    color: var(--text-muted);
+    max-width: 540px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.8;
+  }
+
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1.5rem;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .stat {
+    backdrop-filter: blur(var(--blur));
+    -webkit-backdrop-filter: blur(var(--blur));
+    background: rgba(248, 249, 250, 0.5);
+    border: 1px solid var(--border-light);
+    padding: 1.5rem 1rem;
+    border-radius: 16px;
+    transition: all 0.3s ease;
+  }
+
+  .stat:hover {
+    background: rgba(248, 249, 250, 0.8);
+    border-color: var(--primary);
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-4px);
+  }
+
+  .stat-num {
+    font-family: 'Poppins', sans-serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--primary);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+  }
+
+  /* ──────────────────────────────────────────────────── SECTION */
+  .section {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+  }
+
+  .section-header {
+    margin-bottom: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .section-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 32px;
+    font-weight: 600;
+    color: var(--text-dark);
+  }
+
+  .controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .search-box {
+    position: relative;
+  }
+
+  .search-box input {
+    padding: 10px 16px 10px 36px;
+    font-size: 13px;
+    font-family: 'Inter', sans-serif;
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    background: rgba(248, 249, 250, 0.6);
+    backdrop-filter: blur(var(--blur));
+    color: var(--text-dark);
+    transition: all 0.3s ease;
+    width: 200px;
+  }
+
+  .search-box input:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: rgba(248, 249, 250, 0.9);
+    box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.1);
+  }
+
+  .search-box svg {
+    position: absolute;
+    left: 11px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 14px;
+    height: 14px;
+    stroke: var(--text-muted);
+    fill: none;
+    stroke-width: 2;
+  }
+
+  .filter-btn {
+    padding: 10px 16px;
+    font-size: 12px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    background: rgba(248, 249, 250, 0.6);
+    backdrop-filter: blur(var(--blur));
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .filter-btn:hover,
+  .filter-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+  }
+
+  /* ──────────────────────────────────────────────────── BANDES */
+  .bandes-container {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .bande-card {
+    backdrop-filter: blur(var(--blur));
+    -webkit-backdrop-filter: blur(var(--blur));
+    background: rgba(248, 249, 250, 0.6);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius);
+    padding: 2rem;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bande-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s ease;
+  }
+
+  .bande-card:hover {
+    background: rgba(248, 249, 250, 0.85);
+    border-color: var(--primary);
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-8px);
+  }
+
+  .bande-card:hover::before {
+    left: 100%;
+  }
+
+  .bande-card.playing {
+    border-color: var(--primary);
+    background: rgba(248, 249, 250, 0.9);
+  }
+
+  .bande-header {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+  }
+
+  .bande-index {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 12px;
+    white-space: nowrap;
+    letter-spacing: 0.05em;
+  }
+
+  .bande-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-dark);
+    line-height: 1.4;
+  }
+
+  .bande-context {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: rgba(78, 205, 196, 0.05);
+    border-left: 3px solid var(--primary);
+    border-radius: 8px;
+  }
+
+  .bande-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+
+  .tag {
+    font-size: 11px;
+    padding: 5px 12px;
+    border-radius: 12px;
+    border: 0.5px solid var(--border-light);
+    color: var(--text-muted);
+    background: rgba(248, 249, 250, 0.7);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.2s ease;
+  }
+
+  .tag:hover {
+    border-color: var(--primary);
+    color: var(--primary-dark);
+    background: rgba(78, 205, 196, 0.1);
+  }
+
+  .tag svg {
+    width: 11px;
+    height: 11px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+  }
+
+  /* ──────────────────────────────────────────────────── PLAYER */
+  .player {
+    background: rgba(78, 205, 196, 0.05);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .player-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1rem;
+  }
+
+  .play-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    border: none;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 16px rgba(78, 205, 196, 0.3);
+  }
+
+  .play-btn:hover {
+    transform: scale(1.08);
+    box-shadow: 0 6px 24px rgba(78, 205, 196, 0.4);
+  }
+
+  .play-btn:active {
+    transform: scale(0.96);
+  }
+
+  .play-btn svg {
+    width: 20px;
+    height: 20px;
+    fill: white;
+  }
+
+  .play-btn .icon-pause {
+    display: none;
+  }
+
+  .bande-card.playing .play-btn .icon-play {
+    display: none;
+  }
+
+  .bande-card.playing .play-btn .icon-pause {
+    display: block;
+  }
+
+  .progress-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .progress-track {
+    width: 100%;
+    height: 4px;
+    background: rgba(78, 205, 196, 0.2);
+    border-radius: 2px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.1s linear;
+  }
+
+  .time-display {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .dl-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    padding: 10px 16px;
+    border: 1.5px solid var(--border-light);
+    border-radius: 12px;
+    color: var(--text-muted);
+    background: rgba(248, 249, 250, 0.7);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  .dl-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary-dark);
+    background: rgba(78, 205, 196, 0.1);
+    transform: translateY(-2px);
+  }
+
+  .dl-btn svg {
+    width: 14px;
+    height: 14px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+  }
+
+  /* ──────────────────────────────────────────────────── ABOUT */
+  .about-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  .about-card {
+    backdrop-filter: blur(var(--blur));
+    -webkit-backdrop-filter: blur(var(--blur));
+    background: rgba(248, 249, 250, 0.6);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius);
+    padding: 2rem;
+    transition: all 0.3s ease;
+  }
+
+  .about-card:hover {
+    background: rgba(248, 249, 250, 0.85);
+    border-color: var(--primary);
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-6px);
+  }
+
+  .about-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    color: white;
+    font-size: 20px;
+  }
+
+  .about-card-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+  }
+
+  .about-card-text {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  /* ──────────────────────────────────────────────────── FOOTER */
+  footer {
+    border-top: 1px solid var(--border-light);
+    padding: 2.5rem;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-top: 4rem;
+  }
+
+  footer a {
+    color: var(--primary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  footer a:hover {
+    color: var(--primary-dark);
+  }
+
+  /* ──────────────────────────────────────────────────── ANIMATIONS */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .bande-card {
+    animation: fadeInUp 0.6s ease backwards;
+  }
+
+  .bande-card:nth-child(1) { animation-delay: 0.1s; }
+  .bande-card:nth-child(2) { animation-delay: 0.2s; }
+  .bande-card:nth-child(3) { animation-delay: 0.3s; }
+
+  /* ──────────────────────────────────────────────────── RESPONSIVE */
+  @media (max-width: 768px) {
+    .navbar {
+      padding: 1rem 1.5rem;
+    }
+
+    .navbar-brand {
+      font-size: 18px;
+    }
+
+    .navbar-links {
+      display: none;
+    }
+
+    .hero {
+      padding: 2.5rem 1.5rem 2rem;
+    }
+
+    .hero-title {
+      font-size: 28px;
+    }
+
+    .section {
+      padding: 2rem 1.5rem;
+    }
+
+    .section-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .controls {
+      width: 100%;
+      flex-direction: column;
+    }
+
+    .search-box input {
+      width: 100%;
+    }
+
+    .bande-card {
+      padding: 1.5rem;
+    }
+
+    .bande-header {
+      flex-direction: column;
+    }
+
+    .player-controls {
+      flex-wrap: wrap;
+    }
+
+    .dl-btn {
+      flex: 1;
+      justify-content: center;
+    }
+
+    .about-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: var(--text-muted);
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a href="#" class="navbar-brand">Eukhlou Zikroulah</a>
+  <ul class="navbar-links">
+    <li><a href="#bandes">Les Bandes</a></li>
+    <li><a href="#about">À propos</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div style="display: flex; gap: 3rem; align-items: center; flex-wrap: wrap; justify-content: center;">
+    <img src="baye-djiby-diouf.png" alt="Baye Djiby Diouf" style="width: 220px; height: 280px; border-radius: 16px; object-fit: cover; box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15); border: 1px solid rgba(0, 0, 0, 0.1);">
+    <div style="flex: 1; min-width: 300px;">
+      <div class="hero-badge">Archive Numérique du Saam Fall</div>
+      <h1 class="hero-title">Eukhlou Zikroulah</h1>
+      <p class="hero-subtitle">
+        Archive numérique des bandes audio du Saam Fall. Streaming et téléchargement libre 
+        des enregistrements historiques de Baye Djiby Diouf, préservés pour toujours.
+      </p>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-num" id="bandCount">2</span>
+          <span class="stat-label">Bandes archivées</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">100%</span>
+          <span class="stat-label">Documentées</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">∞</span>
+          <span class="stat-label">Librement Accessibles</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BANDES -->
+<section class="section" id="bandes">
+  <div class="section-header">
+    <h2 class="section-title">Les Bandes</h2>
+    <div class="controls">
+      <div class="search-box">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input 
+          type="search" 
+          id="searchInput" 
+          placeholder="Rechercher..." 
+          oninput="filterBandes()"
+        >
+      </div>
+      <button class="filter-btn active" onclick="filterYear('all', this)">Toutes</button>
+      <button class="filter-btn" onclick="filterYear('1978', this)">1978</button>
+    </div>
+  </div>
+
+  <div class="bandes-container" id="bandesContainer">
+
+    <!-- BANDE 01 EL ROJO -->
+    <div class="bande-card" data-year="1978" data-title="el rojo gamou ndiareme diourbel">
+      <div class="bande-header">
+        <span class="bande-index">Bande 01</span>
+        <div>
+          <h3 class="bande-title">EL ROJO</h3>
+          <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Gamou de Ndiareme Diourbel, 1978</p>
+        </div>
+      </div>
+
+      <div class="bande-context">
+        <strong>Contexte historique :</strong><br><br>
+        Le Gamou de Ndiareme Diourbel en 1978 marque un moment clé dans l'histoire du Saam Fall. 
+        Baye Djiby Diouf s'est produit lors de cette manifestation religieuse majeure. 
+        La bande a été nommée « EL ROJO » (Le Rouge) par Baye Ndame Thiam, un fidèle disciple de 
+        Serigne Cheikh Fall Bayou Goor, en raison de la couleur rouge distinctive de l'enregistrement 
+        original sur cassette. Cette bande revêt une importance capitale : elle capture la voix de 
+        Baye Djiby Diouf durant une période charnière du Saam Fall, où la transmission orale du savoir 
+        spirituel restait le seul moyen de préservation. C'est une fenêtre directe sur l'atmosphère, 
+        l'énergie et l'authenticité de ces célébrations d'une époque révolue.
+      </div>
+
+      <div class="bande-tags">
+        <span class="tag">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          1978
+        </span>
+        <span class="tag">
+          <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Ndiareme Diourbel
+        </span>
+        <span class="tag">
+          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Baye Djiby Diouf
+        </span>
+        <span class="tag" style="border-color: var(--accent); color: #E75480; background: rgba(255, 182, 193, 0.1);">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Rare
+        </span>
+      </div>
+
+      <div class="player">
+        <div class="player-controls">
+          <button class="play-btn" onclick="togglePlay(this)" aria-label="Lire">
+            <svg class="icon-play" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21"/></svg>
+            <svg class="icon-pause" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+          </button>
+          <div class="progress-col">
+            <div class="progress-track" onclick="seek(this, event)">
+              <div class="progress-fill"></div>
+            </div>
+            <div class="time-display">
+              <span class="current-time">0:00</span>
+              <span class="duration">--:--</span>
+            </div>
+          </div>
+        </div>
+        <a class="dl-btn" href="https://pub-538fbc182e164b5c930b3d93f2226370.r2.dev/(R)El%20rokho..mp3" download="EL-ROJO-1978.mp3">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Télécharger
+        </a>
+        <audio class="audio-player" src="https://pub-538fbc182e164b5c930b3d93f2226370.r2.dev/(R)El%20rokho..mp3" preload="none"></audio>
+      </div>
+    </div>
+
+    <!-- BANDE 02 GAMOU THIES 1978 -->
+    <div class="bande-card" data-year="1978" data-title="gamou thiès 1978 premier baye fall">
+      <div class="bande-header">
+        <span class="bande-index">Bande 02</span>
+        <div>
+          <h3 class="bande-title">Gamou Thiès 1978</h3>
+          <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Premier Gamou des Baye Fall à Thiès</p>
+        </div>
+      </div>
+
+      <div class="bande-context">
+        <strong>Contexte historique :</strong><br><br>
+        1978 représente une année pivot pour l'histoire du Saam Fall à Thiès. 
+        Sous la khalifat de Serigne Cheikh Abdou Sackor Fall, le premier Gamou des Baye Fall 
+        s'est déroulé dans cette ville historique. Baye Djiby Diouf y a participé activement, 
+        marquant l'expansion du Saam Fall au-delà de ses centres traditionnels. 
+        Cette bande documente un moment de consolidation et de rayonnement du mouvement religieux. 
+        Elle offre un témoignage sonore précieux des pratiques dévotionnelles, du contexte social, 
+        et de l'atmosphère religieuse de cette époque. L'enregistrement capture les voix, les chants 
+        et les enseignements qui caractérisaient les rassemblements majeurs du Saam Fall.
+      </div>
+
+      <div class="bande-tags">
+        <span class="tag">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          1978
+        </span>
+        <span class="tag">
+          <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Thiès
+        </span>
+        <span class="tag">
+          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Baye Djiby Diouf
+        </span>
+        <span class="tag" style="border-color: var(--accent); color: #E75480; background: rgba(255, 182, 193, 0.1);">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Historique
+        </span>
+      </div>
+
+      <div class="player">
+        <div class="player-controls">
+          <button class="play-btn" onclick="togglePlay(this)" aria-label="Lire">
+            <svg class="icon-play" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21"/></svg>
+            <svg class="icon-pause" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+          </button>
+          <div class="progress-col">
+            <div class="progress-track" onclick="seek(this, event)">
+              <div class="progress-fill"></div>
+            </div>
+            <div class="time-display">
+              <span class="current-time">0:00</span>
+              <span class="duration">--:--</span>
+            </div>
+          </div>
+        </div>
+        <a class="dl-btn" href="https://pub-538fbc182e164b5c930b3d93f2226370.r2.dev/a-Gamou%20thi%C3%A8s%201978.mp3" download="Gamou-Thies-1978.mp3">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Télécharger
+        </a>
+        <audio class="audio-player" src="https://pub-538fbc182e164b5c930b3d93f2226370.r2.dev/a-Gamou%20thi%C3%A8s%201978.mp3" preload="none"></audio>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="empty-state" id="emptyState">
+    Aucune bande ne correspond à votre recherche.
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="section" id="about">
+  <h2 class="section-title">À propos</h2>
+  <p style="font-size: 15px; color: var(--text-muted); max-width: 700px; line-height: 1.8; margin-bottom: 2.5rem; margin-top: 1rem;">
+    Eukhlou Zikroulah est une archive numérique dédiée à la préservation du <strong>Saam Fall</strong>, 
+    patrimoine immatériel et culturel majeur du Sénégal. Le Saam Fall représente un mouvement spirituel 
+    mouride fondé sur la dévotion, la discipline et le service. Baye Djiby Diouf en est l'une des figures 
+    les plus vénérées. Cet projet vise à préserver ces bandes audio dispersées, menacées de disparition, 
+    et à les rendre accessibles librement à tous.
+  </p>
+
+  <div class="about-grid">
+    <div class="about-card">
+      <div class="about-icon">🛡️</div>
+      <h3 class="about-card-title">Préservation</h3>
+      <p class="about-card-text">
+        Les bandes sont hébergées de façon pérenne pour éviter toute suppression ou perte accidentelle.
+      </p>
+    </div>
+    <div class="about-card">
+      <div class="about-icon">🌍</div>
+      <h3 class="about-card-title">Accès Libre</h3>
+      <p class="about-card-text">
+        Streaming gratuit et téléchargement MP3 sans restriction. Le patrimoine doit circuler librement.
+      </p>
+    </div>
+    <div class="about-card">
+      <div class="about-icon">📖</div>
+      <h3 class="about-card-title">Contexte Historique</h3>
+      <p class="about-card-text">
+        Chaque bande est documentée avec date, lieu, source et contexte culturel vérifiés.
+      </p>
+    </div>
+    <div class="about-card">
+      <div class="about-icon">✨</div>
+      <h3 class="about-card-title">Héritage Vivant</h3>
+      <p class="about-card-text">
+        Cet archive est une contribution à la transmission et la connaissance du patrimoine mouride.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>
+    Eukhlou Zikroulah © 2026 — Archive Numérique du Saam Fall<br>
+    <span style="font-size: 12px; opacity: 0.7;">Préservation du Patrimoine Culturel Mouride</span>
+  </p>
+</footer>
+
+<script>
+  let currentCard = null;
+  let currentAudio = null;
+
+  // Charger les durées des audios
+  document.querySelectorAll('.audio-player').forEach(audio => {
+    audio.onloadedmetadata = () => {
+      const card = audio.closest('.bande-card');
+      if (card) {
+        const duration = card.querySelector('.duration');
+        duration.textContent = formatTime(audio.duration);
+      }
+    };
+  });
+
+  function togglePlay(btn) {
+    const card = btn.closest('.bande-card');
+    const audio = card.querySelector('.audio-player');
+    
+    if (currentCard && currentCard !== card) {
+      stopAudio(currentCard);
+    }
+
+    if (card.classList.contains('playing')) {
+      stopAudio(card);
+      return;
+    }
+
+    card.classList.add('playing');
+    currentCard = card;
+    currentAudio = audio;
+
+    audio.play().catch(e => console.log('Erreur audio:', e));
+
+    audio.ontimeupdate = () => {
+      const fill = card.querySelector('.progress-fill');
+      const current = card.querySelector('.current-time');
+      if (audio.duration) {
+        const percent = (audio.currentTime / audio.duration) * 100;
+        fill.style.width = percent + '%';
+        current.textContent = formatTime(audio.currentTime);
+      }
+    };
+
+    audio.onended = () => {
+      stopAudio(card);
+    };
+  }
+
+  function stopAudio(card) {
+    const audio = card.querySelector('.audio-player');
+    audio.pause();
+    audio.currentTime = 0;
+    card.classList.remove('playing');
+    card.querySelector('.progress-fill').style.width = '0%';
+    if (currentCard === card) currentCard = null;
+  }
+
+  function seek(track, e) {
+    const card = track.closest('.bande-card');
+    const audio = card.querySelector('.audio-player');
+    const rect = track.getBoundingClientRect();
+    const percent = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
+    
+    if (audio.duration) {
+      audio.currentTime = (percent / 100) * audio.duration;
+      track.querySelector('.progress-fill').style.width = percent + '%';
+      card.querySelector('.current-time').textContent = formatTime(audio.currentTime);
+    }
+  }
+
+  function formatTime(secs) {
+    if (isNaN(secs)) return '0:00';
+    const m = Math.floor(secs / 60);
+    const s = Math.floor(secs % 60);
+    return m + ':' + (s < 10 ? '0' : '') + s;
+  }
+
+  function filterBandes() {
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    const cards = document.querySelectorAll('.bande-card');
+    let visible = 0;
+
+    cards.forEach(card => {
+      const title = card.dataset.title.toLowerCase();
+      const show = title.includes(query);
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+
+    document.getElementById('emptyState').style.display = visible === 0 ? 'block' : 'none';
+  }
+
+  function filterYear(year, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const cards = document.querySelectorAll('.bande-card');
+    let visible = 0;
+
+    cards.forEach(card => {
+      const cardYear = card.dataset.year;
+      const show = year === 'all' || cardYear === year;
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+
+    document.getElementById('emptyState').style.display = visible === 0 ? 'block' : 'none';
+  }
+</script>
+</body>
+</html>
