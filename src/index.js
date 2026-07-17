@@ -7,12 +7,14 @@ export default {
     if (request.method === "POST" && url.pathname.includes("/api/zikr/submit")) {
       try {
         const fd = await request.formData();
+        // Récupération sécurisée
         const dahira = fd.get("dahira") || "Inconnu";
         const date = fd.get("date") || new Date().toISOString().split('T')[0];
-        const time = fd.get("time") || "00:00"; // Valeur par défaut si rien n'est reçu
+        // Forcer une valeur par défaut si time est null
+        const time = fd.get("time") && fd.get("time") !== "" ? fd.get("time") : "00:00";
         const loc = fd.get("location") || "Non spécifié";
         const file = fd.get("poster");
-
+        
         let urlImg = "";
         if (file && file.size > 0) {
           const key = Date.now() + "_" + file.name;
@@ -20,13 +22,13 @@ export default {
           urlImg = "https://pub-ton-id-r2.r2.dev/" + key;
         }
 
-        // Insertion forcée avec les valeurs récupérées
+        // On utilise la valeur 'time' déjà nettoyée ci-dessus
         await env.DB.prepare("INSERT INTO zikrs (dahira_name, zikr_date, zikr_time, location, poster_url) VALUES (?, ?, ?, ?, ?)")
           .bind(dahira, date, time, loc, urlImg).run();
         
         return new Response(JSON.stringify({success: true}), { headers: { ...cors, "Content-Type": "application/json" } });
       } catch (err) {
-        return new Response(JSON.stringify({error: err.message}), { status: 500, headers: { ...cors, "Content-Type": "application/json" } });
+        return new Response(JSON.stringify({error: "Backend Error: " + err.message}), { status: 500, headers: { ...cors, "Content-Type": "application/json" } });
       }
     }
 
