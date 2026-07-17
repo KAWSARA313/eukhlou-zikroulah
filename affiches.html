@@ -39,14 +39,14 @@
     </main>
 
     <script>
-        const supabase = supabase.createClient(
+        // Initialisation propre avec un nom de variable unique
+        const sbClient = supabase.createClient(
             'https://fjyofnjskrzsscvnrjlh.supabase.co', 
             'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZqeW9mbmpza3J6c3Njdm5yamxoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyODk4NjQsImV4cCI6MjA5OTg2NTg2NH0.H8tDYlDPaPNxBGKCrwy6e6fBl15p6HoGika--p7mNRo'
         );
 
-        // Chargement des événements
         async function loadEvents() {
-            const { data } = await supabase.from('zikrs').select('*').order('created_at', { ascending: false });
+            const { data } = await sbClient.from('zikrs').select('*').order('created_at', { ascending: false });
             if (data) {
                 document.getElementById('events-list').innerHTML = data.map(ev => `
                     <div class="clean-card p-4 rounded-2xl">
@@ -66,9 +66,11 @@
 
             const file = document.getElementById('poster').files[0];
             const fileName = `${Date.now()}_${file.name}`;
-            await supabase.storage.from('posters').upload(fileName, file);
+            
+            const { error: uploadError } = await sbClient.storage.from('posters').upload(fileName, file);
+            if (uploadError) { alert("Erreur upload: " + uploadError.message); btn.disabled = false; return; }
 
-            const { error } = await supabase.from('zikrs').insert({
+            const { error } = await sbClient.from('zikrs').insert({
                 dahira_name: document.getElementById('dahira').value,
                 zikr_date: document.getElementById('date').value,
                 zikr_time: document.getElementById('time').value,
