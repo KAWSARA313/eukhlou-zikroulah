@@ -9,14 +9,14 @@
     <div class="max-w-4xl mx-auto">
         <h1 class="text-2xl font-bold mb-6">Proposer une affiche</h1>
         <form id="upload-form" class="bg-white p-6 rounded-2xl shadow-sm space-y-4">
-            <input type="text" id="event_name" placeholder="Nom de la Dahira" class="w-full p-3 border rounded-xl" required>
-            <input type="date" id="event_date" class="w-full p-3 border rounded-xl" required>
-            <input type="time" id="event_time" class="w-full p-3 border rounded-xl" required>
-            <input type="text" id="event_location" placeholder="Lieu" class="w-full p-3 border rounded-xl" required>
-            <input type="file" id="file_input" class="w-full p-3 border rounded-xl" required>
+            <!-- Ajout des name pour être sûr que le FormData les récupère -->
+            <input type="text" id="event_name" name="dahira" placeholder="Nom de la Dahira" class="w-full p-3 border rounded-xl" required>
+            <input type="date" id="event_date" name="date" class="w-full p-3 border rounded-xl" required>
+            <input type="time" id="event_time" name="time" class="w-full p-3 border rounded-xl" required>
+            <input type="text" id="event_location" name="location" placeholder="Lieu" class="w-full p-3 border rounded-xl" required>
+            <input type="file" id="file_input" name="poster" class="w-full p-3 border rounded-xl" required>
             <button type="submit" id="submit-btn" class="w-full bg-black text-white p-3 rounded-xl">Soumettre l'affiche</button>
         </form>
-        <div id="status-message" class="hidden mt-4 p-4 rounded-xl text-center"></div>
         
         <div id="posters-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10"></div>
     </div>
@@ -25,33 +25,36 @@
         const API_URL = "https://eukhlou-zikroulah.kalu-papis.workers.dev";
         const form = document.getElementById('upload-form');
 
-        // Charger les événements
         async function loadEvents() {
-            const res = await fetch(`${API_URL}/api/zikr/events`);
-            const events = await res.json();
-            const grid = document.getElementById('posters-grid');
-            grid.innerHTML = events.map(e => `
-                <div class="bg-white p-4 rounded-2xl shadow-sm">
-                    <img src="${e.poster_url}" class="w-full h-48 object-cover rounded-xl mb-4">
-                    <h3 class="font-bold text-lg">${e.dahira_name}</h3>
-                    <p class="text-sm text-gray-500">📅 ${e.zikr_date} à ${e.zikr_time}</p>
-                    <p class="text-sm text-gray-500">📍 ${e.location}</p>
-                </div>
-            `).join('');
+            try {
+                const res = await fetch(`${API_URL}/api/zikr/events`);
+                const events = await res.json();
+                const grid = document.getElementById('posters-grid');
+                grid.innerHTML = events.map(e => `
+                    <div class="bg-white p-4 rounded-2xl shadow-sm">
+                        <img src="${e.poster_url}" class="w-full h-48 object-cover rounded-xl mb-4" onerror="this.src='https://via.placeholder.com/400'">
+                        <h3 class="font-bold text-lg">${e.dahira_name || 'Sans nom'}</h3>
+                        <p class="text-sm text-gray-500">📅 ${e.zikr_date || ''} à ${e.zikr_time || ''}</p>
+                        <p class="text-sm text-gray-500">📍 ${e.location || ''}</p>
+                    </div>
+                `).join('');
+            } catch (err) { console.error("Erreur chargement:", err); }
         }
 
         form.onsubmit = async (e) => {
             e.preventDefault();
-            const formData = new FormData();
-            formData.append('dahira', document.getElementById('event_name').value);
-            formData.append('date', document.getElementById('event_date').value);
-            formData.append('time', document.getElementById('event_time').value);
-            formData.append('location', document.getElementById('event_location').value);
-            formData.append('poster', document.getElementById('file_input').files[0]);
+            // Utilisation directe du formulaire pour créer le FormData
+            const formData = new FormData(form);
 
             const res = await fetch(`${API_URL}/api/zikr/submit`, { method: 'POST', body: formData });
-            if (res.ok) alert("Succès !");
-            else alert("Erreur lors de l'envoi");
+            if (res.ok) {
+                alert("Succès !");
+                form.reset();
+                loadEvents();
+            } else {
+                const errorData = await res.json();
+                alert("Erreur : " + errorData.error);
+            }
         };
 
         loadEvents();
