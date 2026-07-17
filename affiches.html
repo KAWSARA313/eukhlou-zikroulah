@@ -1,25 +1,37 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Affiches des Événements - Eukhlou Zikroulah</title>
+    <title>Affiches - Eukhlou Zikroulah</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        body { background: linear-gradient(135deg, #F5F5F5 0%, #F0FFFE 100%); font-family: sans-serif; }
-        .clean-card { background: #FFFFFF; border: 1px solid rgba(0, 0, 0, 0.08); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04); }
+        body { background: #F8FAF9; font-family: 'Inter', sans-serif; }
+        .clean-card { background: #FFFFFF; border: 1px solid rgba(0, 0, 0, 0.05); }
     </style>
 </head>
-<body class="text-[#1A1A1A] min-h-screen pb-12">
-    <header class="max-w-6xl mx-auto px-4 py-6 border-b border-black/5 mb-10">
+<body class="text-[#1A1A1A] pb-20">
+    <!-- Header -->
+    <header class="max-w-6xl mx-auto px-4 py-6 flex justify-between items-center sticky top-0 bg-[#F8FAF9]/80 backdrop-blur-md z-10">
         <a href="/" class="text-xl font-bold tracking-wider">✨ EUKHLOU ZIKROULAH</a>
+        <div class="flex gap-3">
+            <a href="/" class="text-sm font-medium px-4 py-2 rounded-full bg-white border">Accueil</a>
+            <a href="#formulaire" class="text-sm font-medium px-4 py-2 rounded-full bg-black text-white">Proposer</a>
+        </div>
     </header>
 
-    <main class="max-w-6xl mx-auto px-4 space-y-12">
-        <section class="max-w-xl mx-auto">
-            <h2 class="text-2xl font-bold text-center mb-6">Proposer une affiche</h2>
-            <form id="upload-form" class="clean-card rounded-2xl p-8 space-y-4">
+    <main class="max-w-6xl mx-auto px-4 mt-8 space-y-16">
+        <!-- Galerie -->
+        <section>
+            <h2 class="text-2xl font-bold mb-8">Événements publiés</h2>
+            <div id="events-list" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
+        </section>
+
+        <!-- Formulaire -->
+        <section id="formulaire" class="max-w-xl mx-auto">
+            <h2 class="text-2xl font-bold mb-6 text-center">Proposer une affiche</h2>
+            <form id="upload-form" class="clean-card rounded-3xl p-8 space-y-4">
                 <input type="text" id="dahira" required placeholder="Nom de la Dahira" class="w-full px-4 py-3 rounded-xl border">
                 <div class="grid grid-cols-2 gap-4">
                     <input type="date" id="date" required class="w-full px-4 py-3 rounded-xl border">
@@ -27,52 +39,53 @@
                 </div>
                 <input type="text" id="location" required placeholder="Lieu" class="w-full px-4 py-3 rounded-xl border">
                 <input type="file" id="poster" accept="image/*" required class="w-full px-4 py-3 rounded-xl border">
-                <button type="submit" id="submit-btn" class="w-full py-3 bg-[#404040] text-white rounded-xl">Soumettre</button>
+                <button type="submit" id="submit-btn" class="w-full py-4 bg-black text-white rounded-xl font-semibold">Publier l'affiche</button>
             </form>
             <div id="status-message" class="hidden mt-4 p-4 rounded-xl text-center text-sm"></div>
         </section>
-
-        <section>
-            <h2 class="text-2xl font-bold mb-6">Événements publiés</h2>
-            <div id="events-list" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
-        </section>
     </main>
 
+    <!-- Modal Plein Écran -->
+    <div id="modal" class="fixed inset-0 bg-black/90 hidden z-50 flex items-center justify-center p-4 cursor-pointer" onclick="this.classList.add('hidden')">
+        <button class="absolute top-6 right-6 text-white text-4xl">&times;</button>
+        <img id="modal-img" src="" class="max-h-full max-w-full object-contain rounded-lg">
+    </div>
+
     <script>
-        const sbClient = supabase.createClient(
-            'https://fjyofnjskrzsscvnrjlh.supabase.co', 
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZqeW9mbmpza3J6c3Njdm5yamxoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyODk4NjQsImV4cCI6MjA5OTg2NTg2NH0.H8tDYlDPaPNxBGKCrwy6e6fBl15p6HoGika--p7mNRo'
-        );
+        const sbClient = supabase.createClient('https://fjyofnjskrzsscvnrjlh.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZqeW9mbmpza3J6c3Njdm5yamxoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyODk4NjQsImV4cCI6MjA5OTg2NTg2NH0.H8tDYlDPaPNxBGKCrwy6e6fBl15p6HoGika--p7mNRo');
 
         async function loadEvents() {
             const { data } = await sbClient.from('zikrs').select('*').order('created_at', { ascending: false });
             if (data) {
                 document.getElementById('events-list').innerHTML = data.map(ev => {
-                    // Construction de l'URL publique de l'image
                     const imgUrl = `https://fjyofnjskrzsscvnrjlh.supabase.co/storage/v1/object/public/posters/${ev.poster_url}`;
                     return `
-                        <div class="clean-card p-4 rounded-2xl">
-                            <img src="${imgUrl}" alt="Affiche" class="w-full h-48 object-cover rounded-xl mb-4">
-                            <h3 class="font-bold">${ev.dahira_name}</h3>
-                            <p class="text-sm text-gray-500">${ev.zikr_date} à ${ev.zikr_time}</p>
-                            <p class="text-xs mt-2 text-gray-400">📍 ${ev.location}</p>
+                        <div class="clean-card p-2 rounded-3xl group cursor-pointer" onclick="openModal('${imgUrl}')">
+                            <img src="${imgUrl}" class="w-full h-64 object-cover rounded-2xl">
+                            <div class="p-4">
+                                <h3 class="font-bold text-lg">${ev.dahira_name}</h3>
+                                <p class="text-sm text-gray-500">${ev.zikr_date} • ${ev.zikr_time}</p>
+                                <p class="text-xs text-gray-400 mt-1">📍 ${ev.location}</p>
+                            </div>
                         </div>
                     `;
                 }).join('');
             }
         }
 
+        function openModal(url) {
+            document.getElementById('modal-img').src = url;
+            document.getElementById('modal').classList.remove('hidden');
+        }
+
         document.getElementById('upload-form').onsubmit = async (e) => {
             e.preventDefault();
             const btn = document.getElementById('submit-btn');
-            const msg = document.getElementById('status-message');
-            btn.disabled = true;
-
+            btn.disabled = true; btn.textContent = "Publication...";
+            
             const file = document.getElementById('poster').files[0];
             const fileName = `${Date.now()}_${file.name}`;
-            
             await sbClient.storage.from('posters').upload(fileName, file);
-
             await sbClient.from('zikrs').insert({
                 dahira_name: document.getElementById('dahira').value,
                 zikr_date: document.getElementById('date').value,
@@ -80,13 +93,10 @@
                 location: document.getElementById('location').value,
                 poster_url: fileName
             });
-
-            msg.textContent = "✨ Affiche publiée !";
-            msg.className = "mt-4 p-4 bg-green-100 text-green-700 rounded-xl";
-            msg.classList.remove('hidden');
+            
             document.getElementById('upload-form').reset();
             loadEvents();
-            btn.disabled = false;
+            btn.disabled = false; btn.textContent = "Publier l'affiche";
         };
         
         loadEvents();
