@@ -13,7 +13,7 @@
 </head>
 <body class="text-[#1A1A1A] pb-20">
     <!-- Header -->
-    <header class="max-w-6xl mx-auto px-4 py-6 flex justify-between items-center sticky top-0 bg-[#F8FAF9]/80 backdrop-blur-md z-10">
+    <header class="max-w-6xl mx-auto px-4 py-6 flex justify-between items-center sticky top-0 bg-[#F8FAF9]/80 backdrop-blur-md z-10 border-b border-black/5">
         <a href="/" class="text-xl font-bold tracking-wider">✨ EUKHLOU ZIKROULAH</a>
         <div class="flex gap-3">
             <a href="/" class="text-sm font-medium px-4 py-2 rounded-full bg-white border">Accueil</a>
@@ -21,51 +21,79 @@
         </div>
     </header>
 
-    <main class="max-w-6xl mx-auto px-4 mt-8 space-y-16">
+    <main class="max-w-6xl mx-auto px-4 mt-12 space-y-20">
         <!-- Galerie -->
         <section>
-            <h2 class="text-2xl font-bold mb-8">Événements publiés</h2>
-            <div id="events-list" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
+            <div class="flex items-center justify-between mb-10">
+                <h2 class="text-3xl font-extrabold tracking-tight">Événements à venir</h2>
+                <span id="count" class="text-sm text-gray-500 font-medium px-3 py-1 rounded-full bg-gray-100"></span>
+            </div>
+            <div id="events-list" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Chargement... -->
+            </div>
         </section>
 
         <!-- Formulaire -->
-        <section id="formulaire" class="max-w-xl mx-auto">
+        <section id="formulaire" class="max-w-xl mx-auto scroll-mt-24">
             <h2 class="text-2xl font-bold mb-6 text-center">Proposer une affiche</h2>
-            <form id="upload-form" class="clean-card rounded-3xl p-8 space-y-4">
-                <input type="text" id="dahira" required placeholder="Nom de la Dahira" class="w-full px-4 py-3 rounded-xl border">
+            <form id="upload-form" class="clean-card rounded-3xl p-8 space-y-4 shadow-lg shadow-black/5">
+                <input type="text" id="dahira" required placeholder="Nom de la Dahira" class="w-full px-4 py-3 rounded-xl border border-black/10 focus:ring-2 focus:ring-black/20 outline-none transition">
                 <div class="grid grid-cols-2 gap-4">
-                    <input type="date" id="date" required class="w-full px-4 py-3 rounded-xl border">
-                    <input type="time" id="time" required class="w-full px-4 py-3 rounded-xl border">
+                    <input type="date" id="date" required class="w-full px-4 py-3 rounded-xl border border-black/10 focus:ring-2 focus:ring-black/20 outline-none transition">
+                    <input type="time" id="time" required class="w-full px-4 py-3 rounded-xl border border-black/10 focus:ring-2 focus:ring-black/20 outline-none transition">
                 </div>
-                <input type="text" id="location" required placeholder="Lieu" class="w-full px-4 py-3 rounded-xl border">
-                <input type="file" id="poster" accept="image/*" required class="w-full px-4 py-3 rounded-xl border">
-                <button type="submit" id="submit-btn" class="w-full py-4 bg-black text-white rounded-xl font-semibold">Publier l'affiche</button>
+                <input type="text" id="location" required placeholder="Lieu (Ex: Grand Dakar)" class="w-full px-4 py-3 rounded-xl border border-black/10 focus:ring-2 focus:ring-black/20 outline-none transition">
+                <input type="file" id="poster" accept="image/*" required class="w-full px-4 py-3 rounded-xl border border-black/10 bg-gray-50 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-200 file:text-gray-700 hover:file:bg-gray-300 transition cursor-pointer">
+                <button type="submit" id="submit-btn" class="w-full py-4 bg-black text-white rounded-xl font-semibold hover:bg-gray-800 transition active:scale-[0.98]">Publier l'affiche</button>
             </form>
-            <div id="status-message" class="hidden mt-4 p-4 rounded-xl text-center text-sm"></div>
+            <div id="status-message" class="hidden mt-5 p-4 rounded-xl text-center text-sm shadow-inner"></div>
         </section>
     </main>
 
     <!-- Modal Plein Écran -->
-    <div id="modal" class="fixed inset-0 bg-black/90 hidden z-50 flex items-center justify-center p-4 cursor-pointer" onclick="this.classList.add('hidden')">
-        <button class="absolute top-6 right-6 text-white text-4xl">&times;</button>
-        <img id="modal-img" src="" class="max-h-full max-w-full object-contain rounded-lg">
+    <div id="modal" class="fixed inset-0 bg-black/90 hidden z-50 flex items-center justify-center p-4 cursor-pointer transition-opacity duration-300" onclick="closeModal()">
+        <button class="absolute top-6 right-6 text-white text-4xl hover:text-gray-300">&times;</button>
+        <img id="modal-img" src="" class="max-h-[90vh] max-w-[90vw] object-contain rounded-lg shadow-2xl scale-95 transition-transform duration-300">
     </div>
 
     <script>
         const sbClient = supabase.createClient('https://fjyofnjskrzsscvnrjlh.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZqeW9mbmpza3J6c3Njdm5yamxoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyODk4NjQsImV4cCI6MjA5OTg2NTg2NH0.H8tDYlDPaPNxBGKCrwy6e6fBl15p6HoGika--p7mNRo');
 
         async function loadEvents() {
-            const { data } = await sbClient.from('zikrs').select('*').order('created_at', { ascending: false });
+            // Calculer la date d'il y a 30 jours
+            const thirtyDaysAgo = new Date();
+            thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+            const dateStr = thirtyDaysAgo.toISOString().split('T')[0];
+
+            // On sélectionne tout, mais on filtre la date dans la requête
+            const { data } = await sbClient
+                .from('zikrs')
+                .select('*')
+                .gte('zikr_date', dateStr) // Filtre : date >= aujourd'hui - 30 jours
+                .order('zikr_date', { ascending: true }); // Trier par date la plus proche en premier
+
             if (data) {
-                document.getElementById('events-list').innerHTML = data.map(ev => {
+                document.getElementById('count').textContent = `${data.length} affichée(s)`;
+                const container = document.getElementById('events-list');
+                if (data.length === 0) {
+                    container.innerHTML = '<p class="md:col-span-3 text-center py-10 text-gray-500 bg-white rounded-2xl border border-dashed border-black/10">Aucun événement publié récemment.</p>';
+                    return;
+                }
+
+                container.innerHTML = data.map(ev => {
                     const imgUrl = `https://fjyofnjskrzsscvnrjlh.supabase.co/storage/v1/object/public/posters/${ev.poster_url}`;
+                    // Formatage de la date en français
+                    const dateFormatee = new Date(ev.zikr_date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' });
                     return `
-                        <div class="clean-card p-2 rounded-3xl group cursor-pointer" onclick="openModal('${imgUrl}')">
-                            <img src="${imgUrl}" class="w-full h-64 object-cover rounded-2xl">
+                        <div class="clean-card p-2 rounded-3xl group cursor-pointer hover:shadow-xl hover:-translate-y-1 transition-all duration-300" onclick="openModal('${imgUrl}')">
+                            <img src="${imgUrl}" class="w-full h-64 object-cover rounded-2xl transition-transform duration-300 group-hover:scale-[1.02]" alt="Affiche ${ev.dahira_name}">
                             <div class="p-4">
-                                <h3 class="font-bold text-lg">${ev.dahira_name}</h3>
-                                <p class="text-sm text-gray-500">${ev.zikr_date} • ${ev.zikr_time}</p>
-                                <p class="text-xs text-gray-400 mt-1">📍 ${ev.location}</p>
+                                <h3 class="font-bold text-xl tracking-tight">${ev.dahira_name}</h3>
+                                <p class="text-base font-medium text-black/70 mt-1">${dateFormatee} à ${ev.zikr_time.substring(0, 5)}</p>
+                                <p class="text-sm text-black/50 mt-2 flex items-center gap-1.5">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                    ${ev.location}
+                                </p>
                             </div>
                         </div>
                     `;
@@ -74,31 +102,72 @@
         }
 
         function openModal(url) {
-            document.getElementById('modal-img').src = url;
-            document.getElementById('modal').classList.remove('hidden');
+            const modal = document.getElementById('modal');
+            const modalImg = document.getElementById('modal-img');
+            modalImg.src = url;
+            modal.classList.remove('hidden');
+            // Petite astuce pour déclencher l'animation d'apparition
+            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+            document.body.style.overflow = 'hidden'; // Empêche le scroll du fond
         }
+
+        function closeModal() {
+            const modal = document.getElementById('modal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+            document.body.style.overflow = ''; // Réactive le scroll
+        }
+
+        // Fermer la modal avec Echap
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
 
         document.getElementById('upload-form').onsubmit = async (e) => {
             e.preventDefault();
             const btn = document.getElementById('submit-btn');
-            btn.disabled = true; btn.textContent = "Publication...";
+            const msg = document.getElementById('status-message');
+            btn.disabled = true; btn.textContent = "Publication en cours...";
             
             const file = document.getElementById('poster').files[0];
-            const fileName = `${Date.now()}_${file.name}`;
-            await sbClient.storage.from('posters').upload(fileName, file);
-            await sbClient.from('zikrs').insert({
+            if (!file) { alert("Veuillez sélectionner une image."); btn.disabled = false; return; }
+            
+            // Nom de fichier unique basé sur le timestamp et le nom original nettoyé
+            const cleanFileName = file.name.replace(/[^a-zA-Z0-9.]/g, '_');
+            const fileName = `${Date.now()}_${cleanFileName}`;
+            
+            // 1. Upload de l'image
+            const { error: uploadError } = await sbClient.storage.from('posters').upload(fileName, file);
+            if (uploadError) {
+                msg.textContent = "Erreur lors de l'envoi de l'image : " + uploadError.message;
+                msg.className = "mt-5 p-4 bg-red-100 text-red-700 rounded-xl";
+                msg.classList.remove('hidden');
+                btn.disabled = false; btn.textContent = "Publier l'affiche"; return;
+            }
+
+            // 2. Insertion des données
+            const { error: dbError } = await sbClient.from('zikrs').insert({
                 dahira_name: document.getElementById('dahira').value,
                 zikr_date: document.getElementById('date').value,
                 zikr_time: document.getElementById('time').value,
                 location: document.getElementById('location').value,
                 poster_url: fileName
             });
-            
-            document.getElementById('upload-form').reset();
-            loadEvents();
+
+            if (dbError) {
+                msg.textContent = "Erreur lors de l'enregistrement : " + dbError.message;
+                msg.className = "mt-5 p-4 bg-red-100 text-red-700 rounded-xl";
+            } else {
+                msg.textContent = "✨ Affiche publiée avec succès ! Merci de votre contribution." + (data.length === 0 ? " (Note: Les événements passés de plus de 30 jours sont automatiquement masqués)." : "");
+                msg.className = "mt-5 p-4 bg-green-50 text-green-800 rounded-xl border border-green-200";
+                document.getElementById('upload-form').reset();
+                loadEvents(); // Recharger la liste pour inclure la nouvelle
+            }
+            msg.classList.remove('hidden');
             btn.disabled = false; btn.textContent = "Publier l'affiche";
         };
         
+        // Charger les événements au démarrage
         loadEvents();
     </script>
 </body>
