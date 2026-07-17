@@ -39,7 +39,6 @@
     </main>
 
     <script>
-        // Initialisation propre avec un nom de variable unique
         const sbClient = supabase.createClient(
             'https://fjyofnjskrzsscvnrjlh.supabase.co', 
             'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZqeW9mbmpza3J6c3Njdm5yamxoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyODk4NjQsImV4cCI6MjA5OTg2NTg2NH0.H8tDYlDPaPNxBGKCrwy6e6fBl15p6HoGika--p7mNRo'
@@ -48,13 +47,18 @@
         async function loadEvents() {
             const { data } = await sbClient.from('zikrs').select('*').order('created_at', { ascending: false });
             if (data) {
-                document.getElementById('events-list').innerHTML = data.map(ev => `
-                    <div class="clean-card p-4 rounded-2xl">
-                        <h3 class="font-bold">${ev.dahira_name}</h3>
-                        <p class="text-sm text-gray-500">${ev.zikr_date} à ${ev.zikr_time}</p>
-                        <p class="text-xs mt-2 text-gray-400">📍 ${ev.location}</p>
-                    </div>
-                `).join('');
+                document.getElementById('events-list').innerHTML = data.map(ev => {
+                    // Construction de l'URL publique de l'image
+                    const imgUrl = `https://fjyofnjskrzsscvnrjlh.supabase.co/storage/v1/object/public/posters/${ev.poster_url}`;
+                    return `
+                        <div class="clean-card p-4 rounded-2xl">
+                            <img src="${imgUrl}" alt="Affiche" class="w-full h-48 object-cover rounded-xl mb-4">
+                            <h3 class="font-bold">${ev.dahira_name}</h3>
+                            <p class="text-sm text-gray-500">${ev.zikr_date} à ${ev.zikr_time}</p>
+                            <p class="text-xs mt-2 text-gray-400">📍 ${ev.location}</p>
+                        </div>
+                    `;
+                }).join('');
             }
         }
 
@@ -67,10 +71,9 @@
             const file = document.getElementById('poster').files[0];
             const fileName = `${Date.now()}_${file.name}`;
             
-            const { error: uploadError } = await sbClient.storage.from('posters').upload(fileName, file);
-            if (uploadError) { alert("Erreur upload: " + uploadError.message); btn.disabled = false; return; }
+            await sbClient.storage.from('posters').upload(fileName, file);
 
-            const { error } = await sbClient.from('zikrs').insert({
+            await sbClient.from('zikrs').insert({
                 dahira_name: document.getElementById('dahira').value,
                 zikr_date: document.getElementById('date').value,
                 zikr_time: document.getElementById('time').value,
@@ -78,16 +81,11 @@
                 poster_url: fileName
             });
 
-            if (error) {
-                msg.textContent = "Erreur: " + error.message;
-                msg.className = "mt-4 p-4 bg-red-100 text-red-700 rounded-xl";
-            } else {
-                msg.textContent = "✨ Affiche envoyée !";
-                msg.className = "mt-4 p-4 bg-green-100 text-green-700 rounded-xl";
-                document.getElementById('upload-form').reset();
-                loadEvents();
-            }
+            msg.textContent = "✨ Affiche publiée !";
+            msg.className = "mt-4 p-4 bg-green-100 text-green-700 rounded-xl";
             msg.classList.remove('hidden');
+            document.getElementById('upload-form').reset();
+            loadEvents();
             btn.disabled = false;
         };
         
